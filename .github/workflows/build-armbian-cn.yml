@@ -2,208 +2,191 @@
 # 🔨 Armbian 固件编译（中文版）- 支持天翼云 TYC4A RK3568 云笔记本
 # 基于 ophub/amlogic-s9xxx-armbian 官方修改
 # =========================================================================
-
 name: 🔨 编译 Armbian 固件 (中文版) - 支持TYC4A云笔记本
 
 on:
+  repository_dispatch:
   workflow_dispatch:
     inputs:
       release:
-        description: 选择操作系统版本
-        required: false
-        default: 'noble'
+        description: 选择系统版本
+        required: true
+        default: noble
         type: choice
         options:
-          - noble      # Ubuntu 24.04 LTS（默认，推荐）
-          - bookworm   # Debian 12
-          - jammy      # Ubuntu 22.04 LTS
-          - bullseye   # Debian 11
-          - trixie     # Debian 13（测试版）
+          - noble
+          - jammy
+          - bookworm
+          - bullseye
       armbian_board:
-        description: 选择目标设备板型
-        required: false
-        default: 'tyc4a'
+        description: 选择设备板型
+        required: true
+        default: tyc4a
         type: choice
         options:
-          - tyc4a      # 天翼云 TYC4A 笔记本（默认）
-          - wxy-oect   # 云笔记本通用板型
-          - z96a       # 朝歌 Z96A 云笔记本（TYC4A同模具）
-          - all        # 编译所有板型
+          - tyc4a
+          - wxy-oect
+          - z96a
+          - all
+          - r66s
+          - r68s
+          - h616
       armbian_kernel:
-        description: 选择内核版本
-        required: false
-        default: '5.10.y'
+        description: 选择内核版本 (5.10.y RK3568驱动最稳)
+        required: true
+        default: 5.10.y
         type: choice
         options:
-          - 5.10.y     # 5.10 稳定版（推荐，RK3568驱动最齐全）
-          - 6.1.y      # 6.1 主线版
-          - 6.6.y      # 6.6 主线版
+          - 5.10.y
+          - 6.1.y
+          - 6.6.y
+          - 6.12.y
+      kernel_repo:
+        description: 内核仓库
+        required: false
+        default: ophub/kernel
+        type: string
       kernel_usage:
-        description: 选择内核源
+        description: 内核标签 (5.10选flippy，6.x选stable)
         required: false
-        default: 'flippy'
+        default: flippy
         type: choice
         options:
-          - flippy     # flippy/unifreq 内核（5.10必须选这个）
-          - stable     # ophub 稳定版内核
-          - beta       # ophub 测试版内核
-      build_option:
-        description: 选择镜像版本类型
-        required: false
-        default: 'desktop'
-        type: choice
-        options:
-          - desktop    # 带XFCE桌面（笔记本推荐）
-          - server     # 纯命令行服务器版
+          - flippy
+          - stable
+          - beta
+          - dev
       rootfs_type:
-        description: 选择根文件系统类型
+        description: 文件系统类型
         required: false
-        default: 'ext4'
+        default: ext4
         type: choice
         options:
           - ext4
           - btrfs
-      signature:
-        description: 自定义固件签名（文件名里显示）
+      build_type:
+        description: 系统类型 (desktop=带桌面，server=纯命令行)
         required: false
-        default: 'tyc4a'
+        default: desktop
+        type: choice
+        options:
+          - desktop
+          - server
+      builder_sign:
+        description: 固件签名标识
+        required: false
+        default: tyc4a
         type: string
-      auto_kernel:
-        description: 自动选择最新内核
+      base_board:
+        description: 基础编译板型 (不用改)
         required: false
-        default: true
-        type: boolean
-
-  repository_dispatch:
-  workflow_call:
-
-env:
-  REPO_URL: https://github.com/armbian/build
-  REPO_BRANCH: main
-  TZ: Asia/Shanghai
+        default: odroidn2
+        type: string
 
 jobs:
-  build:
-    runs-on: ubuntu-22.04
-    if: github.event.repository.owner.id == github.event.sender.id || github.event_name == 'repository_dispatch' || github.event_name == 'workflow_call'
-
+  build_base:
+    name: 🔨 编译Armbian基础镜像
+    runs-on: ubuntu-latest
     steps:
-      - name: 📥 检出代码
+      - name: 🔄 检出主仓库代码
         uses: actions/checkout@main
 
-      - name: ⚙️ 安装系统依赖
+      - name: 📦 安装编译依赖
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq sudo git wget curl debootstrap build-essential \
-            gcc g++ make bc bison flex libssl-dev libncurses-dev parted kpartx \
-            dosfstools e2fsprogs qemu-user-static qemu-utils pigz xz-utils pv
+          sudo apt-get install -y -qq build-essential bison flex bc libssl-dev libncurses-dev python3 python3-pyelftools git
 
-      - name: 🧩 注册TYC4A设备到设备库
+      - name: ⚙️ 注册TYC4A设备到设备库
         run: |
-          CONF_FILE="build-armbian/armbian-files/common-files/etc/model_database.conf"
-          if [ -f "$CONF_FILE" ] && ! grep -q "tyc4a-rk3568" "$CONF_FILE"; then
-            echo "" >> "$CONF_FILE"
-            echo "# 天翼云 TYC4A RK3568 云笔记本" >> "$CONF_FILE"
-            echo "r234    :Telecom-NB-TYC4A                              :rk3568   :rk3568-tyc4a.dtb                         :NA                           :u-boot.itb                          :idbloader.img                   :4GB-LPDDR4X,64G-eMMC,1Gb-Nic,WiFi,BT       :stable/5.10.y         :rockchip    :rk3568       :armbianEnv.txt  :tyc4a-user                                           :tyc4a                     :yes" >> "$CONF_FILE"
-            echo "[INFO] TYC4A设备已注册到设备库"
-          else
-            echo "[INFO] TYC4A设备已存在，无需重复注册"
-          fi
-          cat "$CONF_FILE" | grep -i tyc4a
+          echo 'r234    :Telecom-NB-TYC4A                              :rk3568   :rk3568-tyc4a.dtb                         :NA                           :u-boot.itb                          :idbloader.img                   :4GB-LPDDR4X,64G-eMMC,1Gb-Nic,WiFi,BT       :stable/5.10.y         :rockchip    :rk3568       :armbianEnv.txt  :tyc4a-user                                           :tyc4a                     :yes' >> build-armbian/armbian-files/common-files/etc/model_database.conf
 
-      - name: 📥 克隆 Armbian 官方编译系统
+      - name: 📥 克隆Armbian官方编译系统
         run: |
-          git clone --depth=1 -b ${REPO_BRANCH} ${REPO_URL} build
-          cd build
-          # 修复非交互编译问题，强制关闭交互菜单
-          echo "NONINTERACTIVE=yes" >> .armbian-userpatches/config
+          git clone --depth=1 -b main https://github.com/armbian/build.git compile-armbian
 
-      - name: 🔨 第一步：编译通用Armbian基础镜像
+      - name: 🔨 非交互模式编译基础镜像
         run: |
-          cd build
-          # 第一阶段编译无桌面基础镜像，避免弹dialog
+          cd compile-armbian
+          export NONINTERACTIVE=yes
+          export DEBIAN_FRONTEND=noninteractive
           ./compile.sh \
             RELEASE=${{ inputs.release }} \
-            BOARD=odroidn2 \
+            BOARD=${{ inputs.base_board }} \
             BRANCH=current \
             BUILD_MINIMAL=no \
             BUILD_ONLY=default \
-            HOST=armbian \
             BUILD_DESKTOP=no \
-            EXPERT=yes \
+            BUILD_DESKTOP=no \
+            HOST=armbian \
             KERNEL_CONFIGURE=no \
-            COMPRESS_OUTPUTIMAGE="sha,gz" \
-            SHARE_LOG=yes \
-            NONINTERACTIVE=yes
+            COMPRESS_OUTPUTIMAGE=sha,gz \
+            EXPERT=yes \
+            SHARE_LOG=yes
 
-      - name: 📦 上传基础镜像日志
+      - name: 📤 上传基础镜像
         uses: actions/upload-artifact@main
-        if: failure() && !cancelled()
         with:
-          name: Armbian-build-logs
-          path: build/output/logs/
+          name: base-armbian-img
+          path: compile-armbian/output/images/*.img.gz
+          retention-days: 7
 
-      - name: 📦 复制基础镜像到重打包目录
+  repack_tyc4a:
+    name: 🔧 重打包为TYC4A专用固件
+    runs-on: ubuntu-latest
+    needs: build_base
+    steps:
+      - name: 🔄 检出主仓库代码
+        uses: actions/checkout@main
+
+      - name: 📥 下载基础镜像
+        uses: actions/download-artifact@main
+        with:
+          name: base-armbian-img
+          path: build/output/images/
+
+      - name: ⚙️ 注册TYC4A设备到设备库
         run: |
-          mkdir -p build/output/images
-          if ls build/output/images/*.img.gz 1>/dev/null 2>&1; then
-            echo "[OK] 基础镜像已生成"
-            ls -lh build/output/images/
-          else
-            echo "[ERR] 基础镜像生成失败"
-            exit 1
-          fi
+          echo 'r234    :Telecom-NB-TYC4A                              :rk3568   :rk3568-tyc4a.dtb                         :NA                           :u-boot.itb                          :idbloader.img                   :4GB-LPDDR4X,64G-eMMC,1Gb-Nic,WiFi,BT       :stable/5.10.y         :rockchip    :rk3568       :armbianEnv.txt  :tyc4a-user                                           :tyc4a                     :yes' >> build-armbian/armbian-files/common-files/etc/model_database.conf
 
-      - name: 🔧 第二步：重打包为TYC4A专用固件（替换内核+DTB+U-Boot）
+      - name: 📦 注入TYC4A启动参数
+        run: |
+          mkdir -p build-armbian/common-files/etc/
+          echo "extraargs=cma=64M console=ttyFIQ0,1500000 console=tty1" > build-armbian/common-files/etc/armbianEnv.txt.append
+          echo "hostname=tyc4a" >> build-armbian/common-files/etc/armbianEnv.txt.append
+
+      - name: 🔧 调用ophub官方重打包脚本
         uses: ophub/amlogic-s9xxx-armbian@main
         with:
           build_target: armbian
           armbian_path: build/output/images/*.img.gz
           armbian_board: ${{ inputs.armbian_board }}
           armbian_kernel: ${{ inputs.armbian_kernel }}
-          auto_kernel: ${{ inputs.auto_kernel }}
-          kernel_repo: ophub/kernel
+          kernel_repo: ${{ inputs.kernel_repo }}
           kernel_usage: ${{ inputs.kernel_usage }}
-          armbian_sign: ${{ inputs.signature }}
-          armbian_rootfs: ${{ inputs.rootfs_type }}
-          extra_cmdline: 'console=ttyFIQ0,1500000 console=tty1 cma=64M'
+          auto_kernel: true
+          rootfs_type: ${{ inputs.rootfs_type }}
+          builder_sign: ${{ inputs.builder_sign }}
 
-      - name: 📤 上传编译产物到Artifacts
+      - name: 📤 上传最终固件
         uses: actions/upload-artifact@main
         with:
-          name: Armbian_${{ inputs.release }}_${{ inputs.build_option }}_TYC4A-rk3568_${{ inputs.armbian_kernel }}
+          name: TYC4A-Armbian-Firmware
           path: build/output/images/*.img.gz
           retention-days: 30
 
-      - name: 🚀 发布到GitHub Release
+      - name: 🚀 发布到Release
         uses: softprops/action-gh-release@v1
-        if: success() && !cancelled()
+        if: success()
         with:
-          tag_name: TYC4A_${{ inputs.release }}_${{ inputs.armbian_kernel }}_${{ github.run_number }}
-          name: TYC4A Armbian 固件 - ${{ inputs.release }} - ${{ inputs.armbian_kernel }}
+          tag_name: tyc4a_5.10_${{ github.run_number }}
+          name: TYC4A Armbian 5.10 固件 Build ${{ github.run_number }}
           body: |
-            ## 🎉 TYC4A 云笔记本 Armbian 固件编译完成
-            ### 版本信息：
-            - 系统版本：${{ inputs.release }}
-            - 内核版本：${{ inputs.armbian_kernel }}
-            - 镜像类型：${{ inputs.build_option }}
-            - 文件系统：${{ inputs.rootfs_type }}
-            ### 刷写说明：
-            1. 下载 .img.gz 文件
-            2. 用 balenaEtcher/Rufus 写入SD卡，或用RKDevTool线刷eMMC
-            3. 默认账号：`root` / `1234`，首次登录请修改密码
-            4. 进系统后执行 `armbian-install` 可写入内置eMMC
-            ### 默认启动参数：
-            - 串口：ttyFIQ0 @ 1500000波特率
-            - CMA：64M（GPU/VPU硬解必需）
+            ## 📋 TYC4A 云笔记本 Armbian 固件
+            - 系统: ${{ inputs.release }}
+            - 内核: ${{ inputs.armbian_kernel }} (flippy维护)
+            - 类型: ${{ inputs.build_type }}
+            - 默认账号: root / 1234
+            - 串口: UART2 1500000波特率
+            - 刷写: RKDevTool线刷 / balenaEtcher写SD卡
+            - 进系统执行 `armbian-install` 写入内置eMMC
           files: build/output/images/*.img.gz
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: ✅ 编译完成
-        run: |
-          echo "========================================"
-          echo "✅ 固件编译成功！"
-          echo "请去 Release 或 Artifacts 下载固件"
-          echo "默认账号：root / 1234"
-          echo "========================================"
