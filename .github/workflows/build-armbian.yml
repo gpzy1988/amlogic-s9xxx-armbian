@@ -20,8 +20,6 @@ on:
         default: tyc4a
         type: choice
         options:
-          - tyc4a
-          - wxy-oect
           - all
           - r66s
           - r68s
@@ -35,8 +33,56 @@ on:
           - h88k-v3
           - h88k-v5
           - hk1
+          - hk1-rev1
+          - hk1-rbox
+          - t9
+          - t95z
+          - t95z-plus
+          - t95max2
+          - tx3
+          - tx3-qz
+          - tx3-me
+          - tx3-mini
+          - tx6
+          - tx9
+          - x96
+          - x96-air
+          - x96-max
+          - x96-max-plus
+          - x96max-plus2
+          - x96q
+          - tanix-tx3
+          - tanix-tx5max
+          - tanix-tx6
+          - tanix-tx6-allwinner
+          - tanix-tx92
+          - a95x
+          - a95xf3air
+          - aml8726m4
+          - beelink
+          - belink-pro
+          - c300
+          - dq68
           - e900v22c
+          - e900v22d
+          - e900v22e
+          - ip108h
+          - ip112h
           - phicomm-n1
+          - vplus
+          - octopus-eth
+          - octopus-mxq-pro-4k
+          - octopus-plat
+          - octopus-s905x3-v311
+          - octopus-sei510
+          - octopus-x96max
+          - w95
+          - zte-b860av3.1
+          - zte-b860av3.2-m
+          - zte-bv310
+          - wxy-oect
+          - z96a
+          - tyc4a
       armbian_kernel:
         description: Select the kernel version
         required: false
@@ -82,30 +128,66 @@ on:
         description: Set Armbian builder signature
         required: false
         default: tyc4a
+      base_board:
+        description: Set the base Armbian board name
+        required: false
+        default: odroidn2
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build Armbian base image
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Install compile dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq build-essential bison flex bc libssl-dev libncurses-dev python3 python3-pyelftools git
+
+      - name: Checkout official Armbian source
+        run: |
+          git clone --depth=1 https://github.com/armbian/build compile-armbian
+
+      - name: Compile Armbian base image
+        run: |
+          cd compile-armbian
+          export NONINTERACTIVE=yes
+          export DEBIAN_FRONTEND=noninteractive
+          ./compile.sh RELEASE=${{ inputs.release }} BOARD=${{ inputs.base_board }} BRANCH=current BUILD_MINIMAL=no BUILD_ONLY=default HOST=armbian BUILD_DESKTOP=no EXPERT=yes KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE="sha,gz" SHARE_LOG=yes
+
+      - name: Generate artifacts
+        uses: actions/upload-artifact@main
+        with:
+          name: output-base-image
+          path: compile-armbian/output/images/*.img.gz
+          retention-days: 5
+
   rebuild:
     runs-on: ubuntu-latest
+    needs: build
     name: Rebuild Armbian for target boards
     steps:
       - uses: actions/checkout@main
 
-      - name: Download official Armbian base image
+      - name: Add TYC4A device definition
         run: |
-          mkdir -p build/output/images/
-          cd build/output/images/
-          echo "Downloading Armbian wxy-oect base image (hardware compatible with TYC4A)..."
-          wget -q --show-progress "https://github.com/ophub/amlogic-s9xxx-armbian/releases/download/Armbian_24.11_wxy-oect_jammy_6.1.75_server_20250123/Armbian_24.11_wxy-oect_jammy_6.1.75_server_20250123.img.gz" -O base.img.gz || \
-          wget -q --show-progress "https://github.com/ophub/amlogic-s9xxx-armbian/releases/latest/download/Armbian_*_wxy-oect_*_server.img.gz" -O base.img.gz
-          gunzip base.img.gz
-          ls -lh
-          echo "Base image ready"
+          echo 'r234    :Telecom-NB-TYC4A                              :rk3568   :rk3568-tyc4a.dtb                         :NA                           :u-boot.itb                          :idbloader.img                   :4GB-LPDDR4X,64G-eMMC,1Gb-Nic,WiFi,BT       :stable/5.10.y         :rockchip    :rk3568       :armbianEnv.txt  :tyc4a-user                                           :tyc4a                     :yes' >> build-armbian/armbian-files/common-files/etc/model_database.conf
+          mkdir -p build-armbian/common-files/etc/
+          echo "extraargs=cma=64M console=ttyFIQ0,1500000 console=tty1" >> build-armbian/common-files/etc/armbianEnv.txt.append
+          echo "hostname=tyc4a" >> build-armbian/common-files/etc/armbianEnv.txt.append
 
-      - name: Rebuild Armbian for TYC4A
+      - name: Download base image
+        uses: actions/download-artifact@main
+        with:
+          name: output-base-image
+          path: build/output/images/
+
+      - name: Rebuild Armbian
         uses: ophub/amlogic-s9xxx-armbian@main
         with:
           build_target: armbian
-          armbian_path: build/output/images/*.img
+          armbian_path: build/output/images/*.img.gz
           armbian_board: ${{ inputs.armbian_board }}
           armbian_kernel: ${{ inputs.armbian_kernel }}
           auto_kernel: true
@@ -113,27 +195,27 @@ jobs:
           kernel_usage: ${{ inputs.kernel_usage }}
           armbian_fstype: ${{ inputs.rootfs_type }}
           builder_name: ${{ inputs.builder_sign }}
-          make_bootscripts: yes
+          compress_format: gz
 
-      - name: Upload firmware artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@main
         with:
           name: Armbian_${{ inputs.armbian_board }}_${{ inputs.armbian_kernel }}
-          path: build/output/images/*
+          path: build/output/images/*.img.gz
           retention-days: 30
 
-      - name: Publish to Release
-        uses: softprops/action-gh-release@v1
+      - name: Create release
         if: success()
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: tyc4a_${{ inputs.armbian_kernel }}_${{ github.run_number }}
           name: TYC4A Armbian ${{ inputs.armbian_kernel }} Firmware
           body: |
-            ## TYC4A 天翼云笔记本 Armbian Firmware
+            ## TYC4A Armbian Firmware
             - OS: ${{ inputs.release }}
             - Kernel: ${{ inputs.armbian_kernel }}
             - Type: ${{ inputs.build_type }}
             - Default login: root / 1234
-            - Serial: UART2 1500000 baud
-            - Flash: RKDevTool eMMC / balenaEtcher SD card
-          files: build/output/images/*
+            - Serial: ttyFIQ0 1500000bps
+            - Install to eMMC: run `armbian-install` after boot
+          files: build/output/images/*.img.gz
