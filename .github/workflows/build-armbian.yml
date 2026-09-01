@@ -3,7 +3,7 @@
 # Copyright (C) 2021 https://github.com/ophub/amlogic-s9xxx-armbian
 #==========================================================================
 
-name: Build Armbian arm64 server image
+name: Build Armbian arm64 server image 1
 
 on:
   repository_dispatch:
