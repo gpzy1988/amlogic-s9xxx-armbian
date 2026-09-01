@@ -3,13 +3,14 @@
 # 基于 ophub/amlogic-s9xxx-armbian 官方修改
 # =========================================================================
 
-name: 🔨 TYC4A Armbian固件一键编译
+name: Build Armbian
 
 on:
+  repository_dispatch:
   workflow_dispatch:
     inputs:
       release:
-        description: 系统版本
+        description: Set the OS Version
         required: true
         default: noble
         type: choice
@@ -17,81 +18,197 @@ on:
           - noble
           - jammy
           - bookworm
-      armbian_kernel:
-        description: 内核版本
+          - bullseye
+      armbian_board:
+        description: Set the Box Board
         required: true
+        default: tyc4a
+        type: choice
+        options:
+          - all
+          - r66s
+          - r68s
+          - h616
+          - h618
+          - h68k
+          - h68k-two
+          - h69k
+          - h88k
+          - h88k-v2
+          - h88k-v3
+          - h88k-v5
+          - hk1
+          - hk1-rev1
+          - hk1-rbox
+          - t9
+          - t95z
+          - t95z-plus
+          - t95max2
+          - tx3
+          - tx3-qz
+          - tx3-me
+          - tx3-mini
+          - tx6
+          - tx9
+          - x96
+          - x96-air
+          - x96-max
+          - x96-max-plus
+          - x96max-plus2
+          - x96q
+          - tanix-tx3
+          - tanix-tx5max
+          - tanix-tx6
+          - tanix-tx6-allwinner
+          - tanix-tx92
+          - a95x
+          - a95xf3air
+          - aml8726m4
+          - beelink
+          - belink-pro
+          - c300
+          - dq68
+          - e900v22c
+          - e900v22d
+          - e900v22e
+          - ip108h
+          - ip112h
+          - phicomm-n1
+          - vplus
+          - octopus-eth
+          - octopus-mxq-pro-4k
+          - octopus-plat
+          - octopus-s905x3-v311
+          - octopus-sei510
+          - octopus-x96max
+          - w95
+          - zte-b860av3.1
+          - zte-b860av3.2-m
+          - zte-bv310
+          - tyc4a
+      armbian_kernel:
+        description: Select the kernel version
+        required: false
         default: 5.10.y
         type: choice
         options:
           - 5.10.y
           - 6.1.y
           - 6.6.y
+          - 6.12.y
+      kernel_repo:
+        description: Set the kernel repository
+        required: false
+        default: ophub/kernel
+        type: string
       kernel_usage:
-        description: 内核源
+        description: Set the tags of the stable kernel
         required: false
         default: flippy
         type: choice
         options:
-          - flippy
           - stable
+          - flippy
+          - dev
+          - beta
+      rootfs_type:
+        description: Select armbian rootfs type
+        required: false
+        default: ext4
+        type: choice
+        options:
+          - btrfs
+          - ext4
       build_type:
-        description: 版本类型
+        description: Select image edition type
         required: false
         default: desktop
         type: choice
         options:
-          - desktop
           - server
+          - desktop
+      builder_sign:
+        description: Set Armbian builder signature
+        required: false
+        default: tyc4a
+      base_board:
+        description: Set the base Armbian board name
+        required: false
+        default: odroidn2
 
 jobs:
   build:
-    name: 🚀 一键编译TYC4A固件
     runs-on: ubuntu-latest
+    name: Build Armbian base image
     steps:
-      - name: 🔄 检出仓库
-        uses: actions/checkout@main
+      - uses: actions/checkout@main
 
-      - name: ⚙️ 注册TYC4A设备
+      - name: Install compile dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y $(cat compile-armbian/tools/host_deps.list 2>/dev/null || echo "build-essential bison flex bc libssl-dev libncurses-dev python3 python3-pyelftools git")
+        shell: {0}
+
+      - name: Checkout official Armbian source
+        run: |
+          git clone --depth=1 https://github.com/armbian/build compile-armbian
+        shell: {0}
+
+      - name: Compile Armbian base image
+        run: |
+          cd compile-armbian
+          ./compile.sh RELEASE=${{ inputs.release }} BOARD=${{ inputs.base_board }} BRANCH=current BUILD_MINIMAL=no BUILD_ONLY=default HOST=armbian BUILD_DESKTOP=no EXPERT=yes KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE="sha" SHARE_LOG=yes
+        shell: {0}
+
+      - name: Generate artifacts
+        uses: actions/upload-artifact@main
+        with:
+          name: output-base-image
+          path: compile-armbian/output/images/*.img
+          retention-days: 5
+
+  rebuild:
+    runs-on: ubuntu-latest
+    needs: build
+    name: Rebuild Armbian for target boards
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Add TYC4A device
         run: |
           echo 'r234    :Telecom-NB-TYC4A                              :rk3568   :rk3568-tyc4a.dtb                         :NA                           :u-boot.itb                          :idbloader.img                   :4GB-LPDDR4X,64G-eMMC,1Gb-Nic,WiFi,BT       :stable/5.10.y         :rockchip    :rk3568       :armbianEnv.txt  :tyc4a-user                                           :tyc4a                     :yes' >> build-armbian/armbian-files/common-files/etc/model_database.conf
-
-      - name: 📦 设置启动参数
-        run: |
           mkdir -p build-armbian/common-files/etc/
-          echo "extraargs=cma=64M console=ttyFIQ0,1500000 console=tty1" > build-armbian/common-files/etc/armbianEnv.txt.append
-          echo "hostname=tyc4a" >> build-armbian/common-files/etc/armbianEnv.txt.append
+          echo "extraargs=cma=64M console=ttyFIQ0,1500000 console=tty1" >> build-armbian/common-files/etc/armbianEnv.txt.append
+        shell: {0}
 
-      - name: 🔨 ophub自动组装固件（自动下载rootfs+内核+uboot）
+      - name: Download base image
+        uses: actions/download-artifact@main
+        with:
+          name: output-base-image
+          path: build/output/images/
+
+      - name: Rebuild Armbian
         uses: ophub/amlogic-s9xxx-armbian@main
         with:
           build_target: armbian
-          armbian_board: tyc4a
+          armbian_path: build/output/images/*.img
+          armbian_board: ${{ inputs.armbian_board }}
           armbian_kernel: ${{ inputs.armbian_kernel }}
-          version_branch: ${{ inputs.release }}
-          kernel_usage: ${{ inputs.kernel_usage }}
           auto_kernel: true
-          rootfs_type: ext4
-          builder_sign: tyc4a
+          kernel_repo: ${{ inputs.kernel_repo }}
+          kernel_usage: ${{ inputs.kernel_usage }}
+          armbian_fstype: ${{ inputs.rootfs_type }}
+          builder_name: ${{ inputs.builder_sign }}
 
-      - name: 📤 上传固件
+      - name: Upload artifact
         uses: actions/upload-artifact@main
         with:
-          name: TYC4A-Armbian-Firmware
-          path: out/**/*.img.gz
+          name: Armbian_${{ inputs.armbian_board }}
+          path: build/output/images/*
           retention-days: 30
 
-      - name: 🚀 发布到Release
+      - name: Create release
+        if: startsWith(github.ref, 'refs/tags/v') && success()
         uses: softprops/action-gh-release@v1
-        if: success()
         with:
-          tag_name: tyc4a_${{ inputs.armbian_kernel }}_${{ github.run_number }}
-          name: TYC4A Armbian ${{ inputs.armbian_kernel }} 固件 Build ${{ github.run_number }}
-          body: |
-            ## TYC4A Armbian固件
-            - 系统: ${{ inputs.release }}
-            - 内核: ${{ inputs.armbian_kernel }}
-            - 类型: ${{ inputs.build_type }}
-            - 默认账号: root / 1234
-            - 串口: 1500000波特率
-            - 刷写: RKDevTool线刷/SD卡写入
-          files: out/**/*.img.gz
+          files: build/output/images/*
