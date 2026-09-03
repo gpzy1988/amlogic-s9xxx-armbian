@@ -263,7 +263,7 @@ on:
           - zcube1-max
           - zk-r39a
           - zysj
-          - tyc4a
+          - Telecom-NB-TYC4A
       armbian_kernel:
         description: "Select kernel version."
         required: false
