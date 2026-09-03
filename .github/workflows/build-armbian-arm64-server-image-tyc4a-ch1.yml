@@ -469,6 +469,13 @@ jobs:
           make_latest: true
           gh_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 提前复制自定义机型配置
+        run: |
+          mkdir -p /home/runner/work/_actions/ophub/amlogic-s9xxx-armbian/main/common-files/etc/
+          mkdir -p /home/runner/work/_actions/ophub/amlogic-s9xxx-armbian/main/files/boot/dtb/rockchip/
+          cp -f ${GITHUB_WORKSPACE}/common-files/etc/model_database.conf /home/runner/work/_actions/ophub/amlogic-s9xxx-armbian/main/common-files/etc/model_database.conf
+          cp -f ${GITHUB_WORKSPACE}/platform-files/rockchip/bootfs/dtb/rockchip/rk3568-tyc4a.dtb /home/runner/work/_actions/ophub/amlogic-s9xxx-armbian/main/files/boot/dtb/rockchip/
+
       - name: 为目标板型重打包 Armbian 固件
         uses: ophub/amlogic-s9xxx-armbian@main
         if: ${{ steps.clean.outputs.status == 'success' && !cancelled() }}
