@@ -11,8 +11,7 @@
 - 充电: CN3705
 - USB HUB: FE1.1s
 
-**唯一区别是 Z96A 用 DDR4、TYC4A 用 LPDDR4X**，但 DDR 初始化在 U-Boot 阶段完成，
-内核 DTB 不区分 DDR 类型，所以直接用 Z96a 的固件 100% 可用。
+**TYC4A 用 LPDDR4X**，
 
 ## 操作步骤（约5分钟，编译等30-60分钟）
 
