@@ -3,7 +3,7 @@
 # Copyright (C) 2021 https://github.com/ophub/amlogic-s9xxx-armbian
 #==========================================================================
 
-name: 编译 Armbian arm64 服务器版镜像 - TYC4A -修复权限版
+name: 编译 Armbian arm64 服务器版镜像 - TYC4A -未修复权限版
 
 on:
   repository_dispatch:
