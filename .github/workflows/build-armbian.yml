@@ -470,7 +470,7 @@ jobs:
           gh_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 为目标板型重打包 Armbian 固件
-        uses: ophub/amlogic-s9xxx-armbian@main
+        uses: gpzy1988/amlogic-s9xxx-armbian@main
         if: ${{ steps.clean.outputs.status == 'success' && !cancelled() }}
         with:
           build_target: armbian
