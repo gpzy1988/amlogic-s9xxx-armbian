@@ -2,26 +2,26 @@
     <img alt="Armbian" src="https://github.com/user-attachments/assets/74e55052-031b-48f8-9aca-e5f1dd9e256a" />
 </div>
 
-# Armbian
+# Armbian / 岸边
 
 [English Instructions](README.md) | [中文说明](README.cn.md) | [日本語説明](README.ja.md)
 
-Armbian is a lightweight Linux distribution built specifically for ARM chips, based on Debian/Ubuntu. The Armbian system is lean, clean, and 100% compatible with Debian/Ubuntu, inheriting its functionality and rich software ecosystem. It runs securely and stably on TF/SD/USB storage and the device's eMMC. This project preserves the integrity of the official Armbian system while extending support for unofficially supported devices such as TV boxes, and adds a set of convenient management commands. You can now replace the Android TV system on your TV box with Armbian, transforming it into a powerful server.
+Armbian（中文名：岸边）是基于 Debian/Ubuntu 构建的专为 ARM 芯片设计的轻量级 Linux 发行版。Armbian 系统精简、清洁，100% 兼容并继承了 Debian/Ubuntu 的功能与丰富的软件生态，可以安全稳定地运行在 TF/SD/USB 及设备的 eMMC 存储中。本项目保留了 Armbian 官方系统的完整性，并进一步拓展了对电视盒子等非官方支持设备的适配，同时增加了一系列便捷操作指令。现在你可以将电视盒子的安卓 TV 系统替换为 Armbian，使其成为一台功能强大的服务器。
 
-This project relies on many [contributors](CONTRIBUTORS.md) to build the Armbian system for `Amlogic`, `Rockchip`, and `Allwinner` devices. It supports writing to eMMC, kernel updates, and other features. For detailed usage, see the [📚Armbian User Documentation](./documents). The latest Armbian system can be downloaded from [⬇️Releases](https://github.com/ophub/amlogic-s9xxx-armbian/releases). Welcome to `Fork` and customize. If this project is helpful, please click the `⭐Star` button in the upper right corner to show your support.
+本项目依托众多[贡献者](CONTRIBUTORS.md)的力量，为 `Amlogic`、`Rockchip` 和 `Allwinner` 平台的设备构建 Armbian 系统，支持写入 eMMC 使用、更新内核等功能。详细使用方法请参见 [📚Armbian 使用文档](./documents/README.cn.md)。最新的 Armbian 系统可在 [⬇️Releases](https://github.com/ophub/amlogic-s9xxx-armbian/releases) 中下载。欢迎 `Fork` 并进行个性化定制。如果对你有帮助，请点击仓库右上角的 `⭐Star` 表示支持。
 
-## Default Information for Armbian System
+## Armbian 系统默认信息
 
-| System Name    | Default Username | Default Password  | SSH Port  | IP Address  |
-| -------------- | ---------------- | ----------------- | --------- | ----------- |
-| 🐧 [Armbian.OS](https://github.com/ophub/amlogic-s9xxx-armbian/releases) | root | 1234 | 22 | Obtain from router |
-| 🐋 [Armbian.Docker](https://hub.docker.com/u/ophub) | root | 1234 | 22 | Static MacVLAN IP |
+| 系统名称        | 默认账号 | 默认密码  | SSH 端口 | IP 地址 |
+| -------------- | ------- | ------- | ------- | ------- |
+| 🐧 [Armbian.OS](https://github.com/ophub/amlogic-s9xxx-armbian/releases) | root | 1234 | 22 | 从路由器获取 |
+| 🐋 [Armbian.Docker](https://hub.docker.com/u/ophub) | root | 1234 | 22 | 静态 MacVLAN IP |
 
-## Supported Devices
+## 支持的设备列表
 
-⬆️ Models from each platform (Amlogic/Rockchip/Allwinner) are ranked by SoC performance from high to low.
+⬆️ 各平台（晶晨/瑞芯微/全志）型号均按 SoC 性能由高至低排列。
 
-| SoC | [Device](https://github.com/ophub/amlogic-s9xxx-armbian/releases) | [Kernel](https://github.com/ophub/kernel) |
+| SoC  | [设备](https://github.com/ophub/amlogic-s9xxx-armbian/releases) | [内核](https://github.com/ophub/kernel) |
 | ---- | ---- | ---- |
 | a311d | [Khadas-VIM3](https://github.com/ophub/amlogic-s9xxx-openwrt/issues/99), [WXY-OES](https://github.com/ophub/amlogic-s9xxx-armbian/issues/2666) | [stable](https://github.com/ophub/kernel/releases/tag/kernel_stable) |
 | s922x | [Beelink-GT-King](https://github.com/ophub/amlogic-s9xxx-armbian/issues/370), [Beelink-GT-King-Pro](https://github.com/ophub/amlogic-s9xxx-armbian/issues/707), [Ugoos-AM6-Plus](https://github.com/ophub/amlogic-s9xxx-openwrt/issues/464), [ODROID-N2](https://github.com/ophub/amlogic-s9xxx-openwrt/issues/201), [X88-King](https://github.com/ophub/amlogic-s9xxx-armbian/issues/988), [Ali-CT2000](https://github.com/ophub/amlogic-s9xxx-armbian/issues/1150), [WXY-OES-Plus](https://github.com/ophub/amlogic-s9xxx-armbian/issues/3029) | [stable](https://github.com/ophub/kernel/releases/tag/kernel_stable) |
@@ -51,146 +51,146 @@ This project relies on many [contributors](CONTRIBUTORS.md) to build the Armbian
 | h6 | [Vplus](https://github.com/ophub/amlogic-s9xxx-armbian/issues/1100), [Tanix-TX6](https://github.com/ophub/amlogic-s9xxx-armbian/issues/3534), [TX6-H](https://github.com/ophub/amlogic-s9xxx-armbian/issues/3528), [T95-max](https://github.com/ophub/fnnas/issues/546), [TQC-A01](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1638) | [stable](https://github.com/ophub/kernel/releases/tag/kernel_stable) |
 
 > [!TIP]
-> At present, the [s905 box](https://github.com/ophub/amlogic-s9xxx-armbian/issues/1173) can only be used with `TF/SD/USB`; other box models support writing to `EMMC`. For more information, refer to the [✅ Supported Device List](build-armbian/armbian-files/common-files/etc/model_database.conf). To add new device support, see Section 12.15 of the documentation: [✳️Adding New Supported Devices](documents/README.md#1215-how-to-add-new-supported-devices). Please read the [📚Armbian User Documentation](./documents) before use, as it provides solutions to common issues.
+> 目前 [s905 的盒子](https://github.com/ophub/amlogic-s9xxx-armbian/issues/1173)仅支持在 `TF/SD/USB` 中使用，其他型号的盒子均支持写入 `EMMC`。更多信息请查阅 [✅支持的设备列表说明](build-armbian/armbian-files/common-files/etc/model_database.conf)。添加新设备支持可参考说明文档 12.15 章节的方法：[✳️添加新的支持设备](documents/README.cn.md#1215-如何添加新的支持设备)。使用前请先阅读 [📚Armbian 使用文档](./documents/README.cn.md)，常见问题均已提供解决方案。
 
-## Installation and Upgrade Instructions for Armbian
+## 安装及升级 Armbian 的相关说明
 
-Choose the Armbian system that matches your device model. Refer to the corresponding documentation for device-specific usage instructions.
+请选择与你的设备型号对应的 Armbian 系统，不同设备的使用方法请参考对应的说明文档。
 
-- ### Install Armbian to EMMC
+- ### 安装 Armbian 到 EMMC
 
-1. For `Rockchip` platform devices, refer to [Chapter 8](documents#8-installing-armbian-to-emmc) of the documentation.
+1. `Rockchip` 平台的安装方法请查看说明文档中的 [第 8 章节](documents/README.cn.md#8-安装-armbian-到-emmc)。
 
-2. For `Amlogic` and `Allwinner` platform devices, use tools such as [Rufus](https://rufus.ie/) or [balenaEtcher](https://www.balena.io/etcher/) to write the system to a USB stick, then insert the USB stick into the device. Log in to the Armbian system (default user: root, default password: 1234) and enter the command:
+2. `Amlogic` 和 `Allwinner` 平台，使用 [Rufus](https://rufus.ie/) 或者 [balenaEtcher](https://www.balena.io/etcher/) 等工具将系统写入 USB 里，然后把写好系统的 USB 插入盒子。登录 Armbian 系统 (默认用户: root, 默认密码: 1234) → 输入命令：
 
 ```shell
 armbian-install
 ```
 
-| Optional | Default | Options | Description       |
-| -------- | ------- | ------- | ----------------- |
-| -m       | no      | yes/no  | Use mainline u-boot |
-| -a       | yes     | yes/no  | Use [ampart](https://github.com/7Ji/ampart) partition adjustment tool |
-| -l       | no      | yes/no  | Show full device list |
+| 可选参数  | 默认值   | 选项     | 说明                |
+| -------  | ------- | ------  | -----------------   |
+| -m       | no      | yes/no  | 使用主线 u-boot |
+| -a       | yes     | yes/no  | 使用 [ampart](https://github.com/7Ji/ampart) 分区表调整工具 |
+| -l       | no      | yes/no  | 显示全部设备列表 |
 
-Example: `armbian-install -m yes -a no`
+示例：`armbian-install -m yes -a no`
 
-- ### Update Armbian Kernel
+- ### 更新 Armbian 内核
 
-Log in to the Armbian system and enter the command:
+登录 Armbian 系统 → 输入命令：
 
 ```shell
-# Run as root user (sudo -i)
-# If no parameter is specified, it will be updated to the latest version.
+# 使用 root 用户运行 (sudo -i)
+# 如果不指定参数，将更新为最新版本。
 armbian-update
 ```
 
-| Optional | Default      | Options       | Description                      |
+| 可选参数  | 默认值        | 选项           | 说明                              |
 | -------- | ------------ | ------------- | -------------------------------- |
-| -r       | ophub/kernel | `<owner>/<repo>` | Set the repository for downloading kernels from github.com |
-| -u       | Automation   | stable/flippy/beta/rk3588/rk35xx | Set the kernel [tags suffix](https://github.com/ophub/kernel/releases) |
-| -k       | Latest version | Kernel version | Set the [kernel version](https://github.com/ophub/kernel/releases/tag/kernel_stable) |
-| -b       | yes          | yes/no        | Automatically back up the currently used kernel when updating |
-| -d       | deb          | tar/deb       | Set the preferred kernel package format. If unavailable, the script will automatically try the alternative format. The `deb` format is recommended for compiling custom drivers. |
-| -m       | no           | yes/no        | Use mainline u-boot |
-| -s       | None         | None/DiskName | [SOS] Restore the system kernel on eMMC/NVMe/sdX or other disks |
-| -h       | None         | None          | View help information |
+| -r       | ophub/kernel | `<owner>/<repo>` | 设置从 github.com 下载内核的仓库  |
+| -u       | 自动识别    | stable/flippy/beta/rk3588/rk35xx | 设置使用的内核的 [tags 后缀](https://github.com/ophub/kernel/releases) |
+| -k       | 最新版        | 内核版本       | 设置[内核版本](https://github.com/ophub/kernel/releases/tag/kernel_stable)  |
+| -b       | yes          | yes/no        | 更新内核时自动备份当前使用的内核    |
+| -d       | deb          | tar/deb       | 设置首选的内核包格式。若指定格式不存在，脚本将自动尝试另一种格式。如需编译自定义驱动，推荐使用 `deb` 格式。 |
+| -m       | no           | yes/no        | 使用主线 u-boot                    |
+| -s       | 无           | 无/磁盘名称     | [SOS] 恢复 eMMC/NVMe/sdX 等磁盘中的系统内核 |
+| -h       | 无           | 无             | 查看帮助信息                       |
 
-Example: `armbian-update -k 5.15 -u stable -d deb`
+示例：`armbian-update -k 5.15 -u stable -d deb`
 
-When specifying the kernel version via the `-k` parameter, you can provide an exact version number (e.g., `armbian-update -k 5.15.50`) or specify only the kernel series (e.g., `armbian-update -k 5.15`). When a series is specified, the latest version within that series will be used automatically.
+通过 `-k` 参数指定内核版本时，可以精确指定具体版本号，例如：`armbian-update -k 5.15.50`；也可以模糊指定内核系列，例如：`armbian-update -k 5.15`。模糊指定时将自动使用该系列的最新版本。
 
-During kernel updates, the currently running kernel is automatically backed up to the `/ddbr/backup` directory, retaining the 3 most recent versions. If the newly installed kernel proves unstable, you can restore a backup kernel at any time. If a kernel update renders the system unbootable, use `armbian-update -s` to restore the system kernel. For more details, see the [Help Document](documents#10-updating-armbian-kernel).
+更新内核时会自动备份当前使用的内核，备份存储在 `/ddbr/backup` 目录中，保留最近 3 个版本。若新安装的内核不稳定，可随时恢复到备份版本。若更新内核后系统无法启动，可通过 `armbian-update -s` 恢复系统内核。更多详情请参见[帮助文档](documents/README.cn.md#10-更新-armbian-内核)。
 
-- ### Replace Armbian Sources
+- ### 更换 Armbian 源
 
-Log in to the Armbian system and enter the command:
+登录 Armbian 系统 → 输入命令：
 
 ```shell
 armbian-apt
 ```
 
-Choosing the appropriate software source for your country or region can significantly improve download speeds. For more details, see the [Help Document](documents#11-installing-common-software).
+根据你所在的国家或地区选择合适的软件源，可以显著提升软件下载速度。更多说明详见[帮助文档](documents/README.cn.md#11-安装常用软件)。
 
-- ### Install Common Software
+- ### 安装常用软件
 
-Log in to the Armbian system and enter the command:
+登录 Armbian 系统 → 输入命令：
 
 ```shell
 armbian-software
 ```
 
-The command `armbian-software -u` updates the local software center list. Based on user feedback in [Issues](https://github.com/ophub/amlogic-s9xxx-armbian/issues), commonly used [software](build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-list.conf) has been gradually integrated with one-click install/update/uninstall support. This includes `Docker images`, `desktop software`, `application services`, and more. See the [detailed instructions](documents/armbian_software.md).
+使用 `armbian-software -u` 命令可更新本地软件中心列表。根据用户在 [Issue](https://github.com/ophub/amlogic-s9xxx-armbian/issues) 中的反馈需求，已逐步整合常用[软件](build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-list.conf)，实现一键安装/更新/卸载等快捷操作。包括 `Docker 镜像`、`桌面软件`、`应用服务`等。详见[更多说明](documents/armbian_software.md)。
 
-- ### Modify Armbian Configuration
+- ### 修改 Armbian 配置
 
-Log in to the Armbian system and enter the command:
+登录 Armbian 系统 → 输入命令：
 
 ```shell
 armbian-config
 ```
 
-- ### Create Swap for Armbian
+- ### 为 Armbian 创建 swap
 
-If you find the device's memory insufficient when running memory-intensive applications such as `Docker`, you can create a `swap` virtual memory partition to use a portion of disk space as additional memory. The parameter unit is `GB`, with a default value of `1`.
+如果你在使用 `Docker` 等内存占用较大的应用时，感觉当前设备内存不足，可以创建 `swap` 虚拟内存分区，将磁盘空间的一定容量虚拟为内存使用。以下命令的参数单位为 `GB`，默认值为 `1`。
 
-Log in to the Armbian system and enter the command:
+登录 Armbian 系统 → 输入命令：
 
 ```shell
 armbian-swap 1
 ```
 
-- ### Control LED Display
+- ### 控制 LED 显示
 
-Log in to the Armbian system and enter the command:
+登录 Armbian 系统 → 输入命令：
 
 ```shell
 armbian-openvfd
 ```
 
-Debug according to the [LED Screen Display Control Instructions](documents/led_screen_display_control.md).
+根据 [LED 屏显示控制说明](documents/led_screen_display_control.md) 进行调试。
 
-- ### Backup/Restore EMMC Original System
+- ### 备份/还原 EMMC 原系统
 
-Supports backing up and restoring the device's `EMMC` partition via `TF/SD/USB`. Before installing Armbian on a new device, it is recommended to back up the original Android TV system for future restoration if needed.
+支持在 `TF/SD/USB` 中对设备 `EMMC` 分区进行备份和恢复。建议在全新设备上安装 Armbian 系统之前，先对原始的安卓 TV 系统进行备份，以便日后需要恢复时使用。
 
-Boot the Armbian system from `TF/SD/USB` and enter the command:
+请从 `TF/SD/USB` 启动 Armbian 系统 → 输入命令：
 
 ```shell
 armbian-ddbr
 ```
 
-Enter `b` at the prompt to back up the system, or `r` to restore.
+根据提示输入 `b` 进行系统备份，输入 `r` 进行系统恢复。
 
 > [!IMPORTANT]
-> Alternatively, the Android system can be flashed directly into eMMC via USB cable. Android system images are available in [Tools](https://github.com/ophub/kernel/releases/tag/tools).
+> 除此之外，也可以通过线刷方式将安卓系统写入 eMMC。安卓系统的下载镜像可在 [Tools](https://github.com/ophub/kernel/releases/tag/tools) 中查找。
 
-- ### Compile the Kernel in Armbian
+- ### 在 Armbian 中编译内核
 
-For kernel compilation instructions, see the [Compile Kernel](compile-kernel) documentation. Log in to the Armbian system and enter the command:
+在 Armbian 中编译内核的用法详见[编译内核](compile-kernel/README.cn.md)说明文档。登录 Armbian 系统后，输入以下命令：
 
 ```shell
 armbian-kernel -u
 armbian-kernel -k 6.6.12
 ```
 
-- ### More Usage Instructions
+- ### 更多使用说明
 
-To update all service scripts in the system to the latest version, log in to the Armbian system and enter the command:
+将本地系统中的全部服务脚本更新至最新版本，可登录 Armbian 系统后输入以下命令：
 
 ```shell
 armbian-sync
 ```
 
-For common issues and their solutions when using Armbian, see [documents](documents).
+在 Armbian 的使用过程中，常见问题的解决方法详见 [documents](documents/README.cn.md)。
 
-## Local Packaging
+## 本地化打包
 
-1. Clone the repository to local `git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-armbian.git`
+1. 克隆仓库到本地 `git clone --depth 1 https://github.com/ophub/amlogic-s9xxx-armbian.git`
 
-2. Install the necessary software packages (using Ubuntu 24.04 as an example)
+2. 安装必要的软件包（以 Ubuntu 24.04 为例）
 
-Enter the `~/amlogic-s9xxx-armbian` root directory, then run the installation command:
+进入 `~/amlogic-s9xxx-armbian` 根目录，然后执行安装命令：
 
 ```shell
 sudo apt-get update -y
@@ -199,42 +199,42 @@ sudo apt-get full-upgrade -y
 sudo apt-get install -y $(cat compile-kernel/tools/script/ubuntu2404-build-armbian-depends)
 ```
 
-3. Enter the `~/amlogic-s9xxx-armbian` root directory, create the `build/output/images` folder, and upload the Armbian image file (e.g., `Armbian_21.11.0-trunk_Odroidn2_current_5.15.50.img`) to the `~/amlogic-s9xxx-armbian/build/output/images` directory. Retain the release version number (e.g., `21.11.0`) and kernel version number (e.g., `5.15.50`) in the original filename, as they will be used for naming the rebuilt Armbian system.
+3. 进入 `~/amlogic-s9xxx-armbian` 根目录，在该目录下创建 `build/output/images` 文件夹，并将 Armbian 镜像文件（如 `Armbian_21.11.0-trunk_Odroidn2_current_5.15.50.img`）上传至 `~/amlogic-s9xxx-armbian/build/output/images` 目录。请保留原版 Armbian 镜像文件名中的发行版本号（如 `21.11.0`）和内核版本号（如 `5.15.50`），它们将在重构后用作 Armbian 系统的命名依据。
 
-4. Enter the `~/amlogic-s9xxx-armbian` root directory and run `sudo ./rebuild -b s905x3 -k 6.6.12` to generate the Armbian image for the specified board. Output files are saved in the `build/output/images` directory.
+4. 进入 `~/amlogic-s9xxx-armbian` 根目录，执行 `sudo ./rebuild -b s905x3 -k 6.6.12` 命令即可生成指定 board 的 Armbian 镜像文件。生成的文件保存在 `build/output/images` 目录中。
 
-- ### Local Packaging Parameter Description
+- ### 本地化打包参数说明
 
-| Parameter | Meaning     | Description |
-| ----      | ----------  | ----------  |
-| -b        | Board      | Specifies the target device codename (default is `all`). You can specify a single device (e.g., `-b s905x3`) or connect multiple codenames with underscores to compile them together (e.g., `-b s905x3_s905d`). The parameter also supports special keywords for batch compilation: `all` compiles every device in the database, `first50` compiles the first 50 devices, `range50_100` compiles devices from the 51st to the 100th (similarly for `range100_150`), and `last20` compiles the last 20 devices. Additionally, you can compile by hardware platform (`amlogic`, `rockchip`, `allwinner`) to build all images for that specific platform, for example, `-b amlogic`. Appending numeric values to the platform name allows you to compile a specific range within that platform's support list; for example, `-b amlogic50` builds the first 50 devices under the Amlogic platform, and `-b amlogic50_100` builds the 51st to the 100th devices. For a complete list of supported device codenames, please refer to the `BOARD` configuration items in [model_database.conf](build-armbian/armbian-files/common-files/etc/model_database.conf). Default: `all` |
-| -r        | KernelRepo | Specify the `<owner>/<repo>` of the github.com kernel repository. Default value: `ophub/kernel` |
-| -u        | kernelUsage | Set the `tags suffix` of the kernel used, such as [stable](https://github.com/ophub/kernel/releases/tag/kernel_stable), [flippy](https://github.com/ophub/kernel/releases/tag/kernel_flippy), [beta](https://github.com/ophub/kernel/releases/tag/kernel_beta). Default value: `stable` |
-| -k        | Kernel     | Specify [kernel](https://github.com/ophub/kernel/releases/tag/kernel_stable) name, such as `-k 6.6.12`. Connect multiple kernels with `_`, such as `-k 6.6.12_5.15.50`. The kernel version freely specified by the `-k` parameter is only valid for kernels using `stable/flippy/beta`. Other kernel series such as [rk3588](https://github.com/ophub/kernel/releases/tag/kernel_rk3588) / [rk35xx](https://github.com/ophub/kernel/releases/tag/kernel_rk35xx) can only use specific kernels. |
-| -a        | AutoKernel | Set whether to automatically use the latest kernel within the same series. When `true`, the kernel repository is checked for newer versions within the series specified by `-k` (e.g., 6.6.12), and if found, the latest version is used automatically. When `false`, the exact specified version is used. Default: `true` |
-| -t        | RootfsType | Set the file system type of the ROOTFS partition. Options: `ext4` or `btrfs`. Example: `-t btrfs`. Default: `ext4` |
-| -s        | Size       | Set the image partition sizes. To set only the ROOTFS partition, specify a single value (e.g., `-s 2560`). To set both BOOTFS and ROOTFS, join them with `/` (e.g., `-s 512/2560`). Default: `512/2560` |
-| -n        | BuilderName | Set the Armbian system builder signature. Do not include spaces. Default: None |
+| 参数  | 含义       | 说明        |
+| ---- | ---------- | ---------- |
+| -b   | Board      | 指定目标设备代号。您可以指定具体设备进行编译（如 `-b s905x3`），或使用下划线连接多个设备代号同批编译（如 `-b s905x3_s905d`）。本参数还支持通过特殊关键字进行批量编译：`all` 表示编译全部设备，`first50` 表示编译设备库中的前 50 个，`range50_100` 表示编译从第 51 个至第 100 个设备（`range100_150` 同理），`last20` 表示最后 20 个。此外，支持按硬件平台（`amlogic`、`rockchip`、`allwinner`）进行分类编译，直接输入平台名称即可编译对应的所有镜像，例如 `-b amlogic`；若在平台名称后附加数值，则可指定编译该平台列表中的特定范围，例如 `-b amlogic50` 表示编译 Amlogic 平台支持列表中的前 50 个设备，`-b amlogic50_100` 表示编译从第 51 个至第 100 个设备。具体的设备代号支持列表，请详见 [model_database.conf](build-armbian/armbian-files/common-files/etc/model_database.conf) 中的 `BOARD` 配置项。默认值：`all` |
+| -r   | KernelRepo | 指定 github.com 内核仓库的 `<owner>/<repo>`。默认值：`ophub/kernel` |
+| -u   | kernelUsage | 设置使用的内核的 `tags 后缀`，如 [stable](https://github.com/ophub/kernel/releases/tag/kernel_stable), [flippy](https://github.com/ophub/kernel/releases/tag/kernel_flippy), [beta](https://github.com/ophub/kernel/releases/tag/kernel_beta)。默认值：`stable` |
+| -k   | Kernel     | 指定 [kernel](https://github.com/ophub/kernel/releases/tag/kernel_stable) 名称，如 `-k 6.6.12` 。多个内核使用 `_` 进行连接，如 `-k 6.6.12_5.15.50` 。通过 `-k` 参数自由指定的内核版本只对使用 `stable/flippy/beta` 的内核有效。其他内核系列例如 [rk3588](https://github.com/ophub/kernel/releases/tag/kernel_rk3588) / [rk35xx](https://github.com/ophub/kernel/releases/tag/kernel_rk35xx) 等只能使用特定内核。  |
+| -a   | AutoKernel | 设置是否自动采用同系列最新版本内核。当为 `true` 时，将自动在内核库中查找 `-k` 指定内核（如 6.6.12）的同系列是否有更新版本，若存在更新版本则自动替换。设置为 `false` 时将使用指定版本编译。默认值：`true` |
+| -t   | RootfsType | 设置系统 ROOTFS 分区的文件系统类型，可选 `ext4` 或 `btrfs`。例如：`-t btrfs`。默认值：`ext4` |
+| -s   | Size       | 设置系统镜像分区大小。仅设置 ROOTFS 分区大小时可只指定一个数值，例如：`-s 2560`；需同时设置 BOOTFS 和 ROOTFS 分区大小时，用 `/` 连接两个数值，例如：`-s 512/2560`。默认值：`512/2560` |
+| -n   | BuilderName | 设置 Armbian 系统构建者签名。签名中请勿包含空格。默认值：无 |
 
-- `sudo ./rebuild`: Use default configuration to package all device models.
-- `sudo ./rebuild -b s905x3 -k 6.6.12`: Recommended. Build with default configuration for the specified kernel.
-- `sudo ./rebuild -b s905x3 -k 6.1.y`: Build with default configuration, using the latest kernel in the 6.1.y series.
-- `sudo ./rebuild -b s905x3_s905d -k 6.6.12_5.15.50`: Build with default configuration for multiple kernels simultaneously. Use `_` to join multiple kernels.
-- `sudo ./rebuild -b s905x3 -k 6.6.12 -s 2560`: Build a single kernel and model with default configuration; ROOTFS partition size set to 2560 MiB.
-- `sudo ./rebuild -b s905x3_s905d`: Build all kernels for multiple models with default configuration. Use `_` to join multiple models.
-- `sudo ./rebuild -k 6.6.12_5.15.50`: Build all models with default configuration and multiple specified kernels. Use `_` to join kernels.
-- `sudo ./rebuild -k 6.6.12_5.15.50 -a true`: Same as above, with automatic upgrade to the latest kernel within each series.
-- `sudo ./rebuild -t btrfs -s 2560 -k 6.6.12`: Build all models with btrfs filesystem, 2560 MiB ROOTFS, and kernel 6.6.12.
+- `sudo ./rebuild` : 使用默认配置，对全部型号的设备进行打包。
+- `sudo ./rebuild -b s905x3 -k 6.6.12` : 推荐用法。使用默认配置编译指定内核。
+- `sudo ./rebuild -b s905x3 -k 6.1.y` : 使用默认配置编译，内核使用 6.1.y 系列的最新版。
+- `sudo ./rebuild -b s905x3_s905d -k 6.6.12_5.15.50` : 使用默认配置，同时打包多个内核。多个内核用 `_` 连接。
+- `sudo ./rebuild -b s905x3 -k 6.6.12 -s 2560` : 使用默认配置，指定单个内核和单个型号进行打包，ROOTFS 分区大小设为 2560 MiB。
+- `sudo ./rebuild -b s905x3_s905d`  使用默认配置，对多个型号进行全部内核打包，多个型号用 `_` 连接。
+- `sudo ./rebuild -k 6.6.12_5.15.50` : 使用默认配置，指定多个内核，对全部型号进行打包。多个内核用 `_` 连接。
+- `sudo ./rebuild -k 6.6.12_5.15.50 -a true` : 使用默认配置，指定多个内核，对全部型号进行打包，并自动升级到同系列最新内核。
+- `sudo ./rebuild -t btrfs -s 2560 -k 6.6.12` : 使用默认配置，文件系统设为 btrfs，ROOTFS 分区大小为 2560 MiB，指定内核为 6.6.12，对全部型号进行打包。
 
-## Use GitHub Actions for Compilation
+## 使用 GitHub Actions 进行编译
 
-1. Workflow configuration files are located in the [.github/workflows/](.github/workflows/) directory.
+1. 关于 Workflows 文件的配置详见 [.github/workflows/](.github/workflows/) 目录。
 
-2. Fresh Build: On the [Actions](https://github.com/ophub/amlogic-s9xxx-armbian/actions) page, select ***`Build Armbian server image`*** to use the [build-armbian-arm64-server-image.yml](.github/workflows/build-armbian-arm64-server-image.yml) workflow. You can choose from Ubuntu series (e.g., `resolute`) or Debian series (e.g., `trixie`). Click ***`Run workflow`*** to start the build.
+2. 全新编译：在 [Actions](https://github.com/ophub/amlogic-s9xxx-armbian/actions) 页面中选择 ***`Build Armbian server image`***，即可通过 [build-armbian-arm64-server-image.yml](.github/workflows/build-armbian-arm64-server-image.yml) 进行编译。可选择 Ubuntu 系列（如 `resolute`）或 Debian 系列（如 `trixie`）等。点击 ***`Run workflow`*** 按钮即可开始编译。
 
-3. Rebuild: If [Releases](https://github.com/ophub/amlogic-s9xxx-armbian/releases) already contains compiled `Armbian_.*-trunk_.*.img.gz` files and you only need to repackage for other boards, skip the source compilation step and use [build-armbian-using-releases-files.yml](.github/workflows/build-armbian-using-releases-files.yml) for secondary builds.
+3. 二次编译：如果 [Releases](https://github.com/ophub/amlogic-s9xxx-armbian/releases) 中已有编译好的 `Armbian_.*-trunk_.*.img.gz` 文件，只需为其他 board 重新打包，可跳过源文件编译步骤，直接使用 [build-armbian-using-releases-files.yml](.github/workflows/build-armbian-using-releases-files.yml) 进行二次制作。
 
-4. To use other Armbian systems (e.g., the [odroidn2](https://armbian.tnahosting.net/dl/odroidn2/archive/) image from the official [armbian.tnahosting.net](https://armbian.tnahosting.net/dl/) download site), simply reference this repository's script in the workflow file [build-armbian-using-official-image.yml](.github/workflows/build-armbian-using-official-image.yml) for Armbian restructuring to support other devices. Example:
+4. 使用其他 Armbian 系统（如 Armbian 官方下载站 [armbian.tnahosting.net](https://armbian.tnahosting.net/dl/) 提供的 [odroidn2](https://armbian.tnahosting.net/dl/odroidn2/archive/) 系统），只需在工作流配置文件 [build-armbian-using-official-image.yml](.github/workflows/build-armbian-using-official-image.yml) 中引入本仓库的脚本进行 Armbian 重构，即可适配其他设备。示例代码如下：
 
 ```yaml
 - name: Build Armbian
@@ -246,40 +246,40 @@ sudo apt-get install -y $(cat compile-kernel/tools/script/ubuntu2404-build-armbi
     armbian_kernel: 6.12.y_6.18.y
 ```
 
-- ### GitHub Actions Input Parameter Description
+- ### GitHub Actions 输入参数说明
 
-These parameters correspond to the local packaging command options described above.
+相关参数与本地打包命令一一对应，详情请参考上述说明。
 
-| Parameter       | Default       | Description                                             |
-|-----------------|---------------|---------------------------------------------------------|
-| armbian_path    | None          | Set the path of the original Armbian file. Supports workflow file paths (e.g., `build/output/images/*.img`) and network download URLs (e.g., `https://dl.armbian.com/*/Armbian_*.img.xz`). |
-| armbian_board   | all           | Set the `board` of the package box, refer to `-b`       |
-| kernel_repo     | ophub/kernel  | Specify `<owner>/<repo>` of the github.com kernel repository, refer to `-r` |
-| kernel_usage    | stable        | Set the `tags suffix` of the used kernel. Refer to `-u` |
-| armbian_kernel  | 6.12.y_6.18.y | Set the [version](https://github.com/ophub/kernel/releases/tag/kernel_stable) of the kernel, refer to `-k` |
-| auto_kernel     | true          | Set whether to automatically adopt the latest version of the same series kernel, refer to `-a`       |
-| armbian_fstype  | ext4          | Set the file system type of the system's ROOTFS partition, refer to `-t`  |
-| armbian_size    | 512/2560      | Set the size of the system BOOTFS and ROOTFS partitions, function reference `-s`  |
-| armbian_files   | false         | Add custom Armbian files. When set, all files in this directory will be copied to [common-files](build-armbian/armbian-files/common-files). The directory structure must mirror the Armbian root directory to ensure files are correctly overlaid (e.g., default configuration files should be placed under `etc/default/`). |
-| builder_name    | None          | Set the Armbian system builder signature, refer to `-n` |
+| 参数              | 默认值         | 说明                                             |
+|------------------|---------------|--------------------------------------------------|
+| armbian_path     | 无            | 设置原版 Armbian 文件的路径。支持当前工作流中的文件路径（如 `build/output/images/*.img`），也支持网络下载地址（如 `https://dl.armbian.com/*/Armbian_*.img.xz`） |
+| armbian_board    | all           | 设置打包盒子的 `board` ，功能参考 `-b`                 |
+| kernel_repo      | ophub/kernel  | 指定 github.com 内核仓库的 `<owner>/<repo>`，功能参考 `-r` |
+| kernel_usage     | stable        | 设置使用的内核的 `tags 后缀`。功能参考 `-u` |
+| armbian_kernel   | 6.12.y_6.18.y | 设置内核 [版本](https://github.com/ophub/kernel/releases/tag/kernel_stable)，功能参考 `-k` |
+| auto_kernel      | true          | 设置是否自动采用同系列最新版本内核，功能参考 `-a`       |
+| armbian_fstype   | ext4          | 设置系统 ROOTFS 分区的文件系统类型，功能参考 `-t`     |
+| armbian_size     | 512/2560      | 设置系统 BOOTFS 和 ROOTFS 分区的大小，功能参考 `-s`  |
+| armbian_files    | false         | 添加自定义 Armbian 文件。设置后，该目录下的所有文件将被复制到 [common-files](build-armbian/armbian-files/common-files) 中。目录结构必须与 Armbian 根目录保持一致，以确保文件正确覆盖到固件中（例如：默认配置文件应存放于 `etc/default/` 子目录下）。 |
+| builder_name     | 无             | 设置 Armbian 系统构建者签名，功能参考 `-n`           |
 
-- ### GitHub Actions Output Variable Description
+- ### GitHub Actions 输出变量说明
 
-Uploading to `Releases` requires `Workflow read and write permissions` for the repository. See the [usage instructions](documents/README.md#2-set-up-private-variable-github_token) for details.
+上传到 `Releases` 需要为仓库设置 `Workflow 读写权限`，详见[使用说明](documents/README.cn.md#2-设置隐私变量-github_token)。
 
-| Parameter                        | Default       | Description                           |
-|----------------------------------|---------------|---------------------------------------|
-| ${{ env.PACKAGED_OUTPUTPATH }}   | out           | Armbian system files output path      |
-| ${{ env.PACKAGED_OUTPUTDATE }}   | 04.13.1058    | Packaging date (month.day.hourminute) |
-| ${{ env.PACKAGED_STATUS }}       | success       | Packaging status: success / failure   |
+| 参数                                 | 默认值         | 说明                       |
+|-------------------------------------|---------------|----------------------------|
+| ${{ env.PACKAGED_OUTPUTPATH }}      | out           | Armbian 系统文件输出路径      |
+| ${{ env.PACKAGED_OUTPUTDATE }}      | 04.13.1058    | 打包日期（月.日.时分）         |
+| ${{ env.PACKAGED_STATUS }}          | success       | 打包状态：success / failure  |
 
-## Build Armbian Docker Image
+## 制作 Armbian Docker 镜像
 
-For creating [Docker](https://hub.docker.com/u/ophub) images of the Armbian system, refer to the [armbian_docker](./compile-kernel/tools/script/docker) build script.
+Armbian 系统 [Docker](https://hub.docker.com/u/ophub) 镜像的制作方法可参考 [armbian_docker](./compile-kernel/tools/script/docker) 制作脚本。
 
-## Compiling Kernel Using GitHub Actions
+## 使用 GitHub Actions 编译内核
 
-For kernel compilation instructions, see [compile-kernel](compile-kernel).
+内核的编译方法详见[编译内核](compile-kernel/README.cn.md)。
 
 ```yaml
 - name: Compile the kernel
@@ -291,24 +291,24 @@ For kernel compilation instructions, see [compile-kernel](compile-kernel).
     kernel_sign: -yourname
 ```
 
-## Armbian Contributors
+## Armbian 贡献者
 
-First and foremost, thanks to [150balbes](https://github.com/150balbes) for the outstanding contributions and the solid foundation laid for running Armbian on Amlogic TV boxes. The [Armbian](https://github.com/armbian/build) system compiled here uses the latest official source code for real-time builds. The development approach is inspired by tutorials from authors such as [ebkso](https://www.kflyo.com/howto-compile-armbian-for-n1-box). Thanks to everyone's dedication and sharing, enabling Armbian to run on an ever-growing range of devices.
+首先感谢 [150balbes](https://github.com/150balbes) 为在 Amlogic 电视盒子上运行 Armbian 所做出的杰出贡献和奠定的坑实基础。本项目编译的 [Armbian](https://github.com/armbian/build) 系统直接使用官方当前的最新源码进行实时编译。程序的开发思路来源于 [ebkso](https://www.kflyo.com/howto-compile-armbian-for-n1-box) 等作者的教程。感谢各位的奉献与分享，让我们得以在更多设备上使用 Armbian 系统。
 
-The [u-boot](https://github.com/ophub/u-boot), [kernel](https://github.com/ophub/kernel), and other resources used in this system are primarily sourced from the [unifreq/openwrt_packit](https://github.com/unifreq/openwrt_packit) project. Some files have been contributed by users through [Pull Requests](https://github.com/ophub/amlogic-s9xxx-armbian/pulls) and [Issues](https://github.com/ophub/amlogic-s9xxx-armbian/issues) in projects such as [amlogic-s9xxx-openwrt](https://github.com/ophub/amlogic-s9xxx-openwrt), [amlogic-s9xxx-armbian](https://github.com/ophub/amlogic-s9xxx-armbian), [luci-app-amlogic](https://github.com/ophub/luci-app-amlogic), [u-boot](https://github.com/ophub/u-boot), and [kernel](https://github.com/ophub/kernel). To acknowledge these pioneers and contributors, all contributions since the repository's creation (`2021-09-19`) are recorded in [CONTRIBUTORS.md](https://github.com/ophub/amlogic-s9xxx-armbian/blob/main/CONTRIBUTORS.md). Thanks again to everyone for breathing new life and purpose into these devices.
+本系统所使用的 [u-boot](https://github.com/ophub/u-boot)、[kernel](https://github.com/ophub/kernel) 等资源主要来源于 [unifreq/openwrt_packit](https://github.com/unifreq/openwrt_packit) 项目，部分文件由用户在 [amlogic-s9xxx-openwrt](https://github.com/ophub/amlogic-s9xxx-openwrt) / [amlogic-s9xxx-armbian](https://github.com/ophub/amlogic-s9xxx-armbian) / [luci-app-amlogic](https://github.com/ophub/luci-app-amlogic) / [kernel](https://github.com/ophub/kernel) / [u-boot](https://github.com/ophub/u-boot) 等项目的 [Pull](https://github.com/ophub/amlogic-s9xxx-armbian/pulls) 和 [Issues](https://github.com/ophub/amlogic-s9xxx-armbian/issues) 中贡献分享。为感谢这些开拓者和分享者，自本仓库创建之日起（`2021-09-19`），已统一在 [CONTRIBUTORS.md](https://github.com/ophub/amlogic-s9xxx-armbian/blob/main/CONTRIBUTORS.md) 中进行记录。再次感谢大家为设备赋予新的生命与价值。
 
-## Other Distributions
+## 其他发行版
 
-- The [amlogic-s9xxx-openwrt](https://github.com/ophub/amlogic-s9xxx-openwrt) project provides the `OpenWrt` system for TV boxes, also applicable to Armbian-supported devices.
-- The [fnnas](https://github.com/ophub/fnnas) project provides the `FnNAS` system for TV boxes, also applicable to Armbian-supported devices.
-- [unifreq](https://github.com/unifreq/openwrt_packit) has created `OpenWrt` systems for a wide range of Amlogic, Rockchip, and Allwinner devices, serving as a benchmark project in the community. Highly recommended.
-- [Scirese](https://github.com/Scirese/alarm) has tested the build, installation, and usage of `Arch Linux ARM` / `Manjaro` systems on Android TV boxes. See his repository for details.
-- [7Ji](https://7ji.github.io/) has published articles on reverse engineering and development for the Amlogic platform, covering topics such as installing ArchLinux ARM and analyzing the Amlogic boot mechanism. His [ampart](https://github.com/7Ji/ampart) project provides a partition tool for reading and editing Amlogic eMMC partition tables and DTB partitions, enabling 100% utilization of eMMC space. The [amlogic-s9xxx-archlinuxarm](https://github.com/7Ji/amlogic-s9xxx-archlinuxarm) project provides build and usage instructions for `Arch Linux ARM`. The [YAopenvfD](https://github.com/7Ji/YAopenvfD) project offers an alternative openvfd daemon implementation.
-- [13584452567](https://github.com/13584452567) is the pioneer for `Rockchip` device support in this repository. Through his contributions, support was expanded for numerous `Rockchip` devices including [EAIDK-610](https://github.com/ophub/amlogic-s9xxx-armbian/pull/991), [King3399](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1080), [TN3399](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1094), [Kylin3399](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1132), [ZCube1-Max](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1247), [tvi3315a](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1687), [xiaobao](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1698), and more. He also maintains specialized [kernels](https://github.com/13584452567/linux-6.6.y) for `Allwinner` devices such as [TQC-A01](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1638), and has provided extensive technical support and solutions in [Discussions](https://github.com/ophub/amlogic-s9xxx-armbian/discussions/1634) and [Issues](https://github.com/ophub/amlogic-s9xxx-armbian/issues), making significant contributions to the community.
-- [cooip-jm](https://github.com/cooip-jm) shares many guides on Armbian, LXC, Docker, AdGuard, and other applications in his [wiki](https://github.com/cooip-jm/About-openwrt/wiki). Recommended reading.
+- [amlogic-s9xxx-openwrt](https://github.com/ophub/amlogic-s9xxx-openwrt) 项目提供了适用于盒子的 `OpenWrt` 系统，在支持 Armbian 的相关设备上同样适用。
+- [fnnas](https://github.com/ophub/fnnas) 项目提供了适用于盒子的 `FnNAS` 系统，在支持 Armbian 的相关设备上同样适用。
+- [unifreq](https://github.com/unifreq/openwrt_packit) 为晶晨、瑞芯微和全志等平台的更多设备制作了 `OpenWrt` 系统，是盒子生态的标杆项目，推荐使用。
+- [Scirese](https://github.com/Scirese/alarm) 在安卓电视盒子上测试了 `Arch Linux ARM` / `Manjaro` 系统的制作、安装和使用，详情请参见其仓库说明。
+- [7Ji](https://7ji.github.io/) 在其博客中发表了多篇关于 Amlogic 平台逆向工程与开发的文章，涵盖以 ArchLinux 方式安装 ArchLinux ARM 系统、Amlogic 平台启动机制解析等内容。其 [ampart](https://github.com/7Ji/ampart) 项目提供了一款分区工具，可读取并编辑 Amlogic eMMC 分区表和 DTB 内分区，实现 eMMC 空间 100% 利用。[amlogic-s9xxx-archlinuxarm](https://github.com/7Ji/amlogic-s9xxx-archlinuxarm) 项目提供了 `Arch Linux ARM` 系统的制作和使用方法。[YAopenvfD](https://github.com/7Ji/YAopenvfD) 项目提供了另一个 openvfd 守护进程实现。
+- [13584452567](https://github.com/13584452567) 是本仓库 `Rockchip` 系列设备的开拓者。凭借其分享，本项目拓展了对 [EAIDK-610](https://github.com/ophub/amlogic-s9xxx-armbian/pull/991)、[King3399](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1080)、[TN3399](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1094)、[Kylin3399](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1132)、[ZCube1-Max](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1247)、[tvi3315a](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1687)、[xiaobao](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1698) 等众多 `Rockchip` 设备的支持。他还是 [TQC-A01](https://github.com/ophub/amlogic-s9xxx-armbian/pull/1638) 等 `Allwinner` 设备[专用内核](https://github.com/13584452567/linux-6.6.y)的维护者，并在[论坛](https://github.com/ophub/amlogic-s9xxx-armbian/discussions/1634)和[问答区](https://github.com/ophub/amlogic-s9xxx-armbian/issues)中提供了大量技术支持和解决方案，为盒子生态的发展做出了巨大贡献。
+- [cooip-jm](https://github.com/cooip-jm) 在其 [wiki](https://github.com/cooip-jm/About-openwrt/wiki) 中分享了许多关于 Armbian、LXC、Docker、AdGuard 等应用的使用方法，推荐参考学习。
 
 
-## Links
+## 链接
 
 - [armbian](https://github.com/armbian/build)
 - [unifreq](https://github.com/unifreq)
