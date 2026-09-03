@@ -1,6 +1,6 @@
 #==========================================================================
 # Description: Build Armbian arm64 server image
-# Copyright (C) 2021 https://github.com/ophub/amlogic-s9xxx-armbian
+# Copyright (C) 2021 https://github.com/gpzy1988/amlogic-s9xxx-armbian
 #==========================================================================
 
 name: 编译 Armbian arm64 服务器版镜像 - TYC4A -未修复权限版
@@ -284,10 +284,10 @@ on:
       kernel_repo:
         description: "内核仓库"
         required: false
-        default: "ophub/kernel"
+        default: "gpzy1988/kernel"
         type: choice
         options:
-          - ophub/kernel
+          - gpzy1988/kernel
       kernel_usage:
         description: "选择内核源"
         required: false
@@ -320,7 +320,7 @@ on:
         default: "tyc4a"
         type: choice
         options:
-          - ophub
+          - gpzy1988
           - angel
       config_board:
         description: "基础镜像板型名称"
@@ -376,7 +376,7 @@ jobs:
           sudo rm -f /swapfile /mnt/swapfile
           sudo apt-get -y update
           sudo apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
-          sudo apt-get -y install $(curl -fsSL https://ophub.org/ubuntu2404-build-armbian-depends)
+          sudo apt-get -y install $(curl -fsSL https://gpzy1988.org/ubuntu2404-build-armbian-depends)
           sudo systemctl daemon-reload
           #sudo apt-get -y full-upgrade
           sudo apt-get -y autoremove --purge
@@ -417,7 +417,7 @@ jobs:
           df -hT ${PWD}
           git clone -q --single-branch --depth=1 --branch=main https://github.com/armbian/build.git build
           ln -sf /builder/build ${{ github.workspace }}/build
-          ln -sf /builder/build /home/runner/work/_actions/ophub/amlogic-s9xxx-armbian/main/build
+          ln -sf /builder/build /home/runner/work/_actions/gpzy1988/amlogic-s9xxx-armbian/main/build
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: 编译 Armbian 基础镜像 [ ${{ matrix.release }} ]
@@ -458,7 +458,7 @@ jobs:
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: 上传 Armbian 基础镜像到 Release
-        uses: ophub/upload-to-releases@main
+        uses: gpzy1988/upload-to-releases@main
         if: ${{ steps.clean.outputs.status == 'success' && !cancelled() }}
         with:
           tag: ${{ env.build_tag }}
@@ -470,7 +470,7 @@ jobs:
           gh_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 为目标板型重打包 Armbian 固件
-        uses: ophub//amlogic-s9xxx-armbian@main
+        uses: gpzy1988//amlogic-s9xxx-armbian@main
         if: ${{ steps.clean.outputs.status == 'success' && !cancelled() }}
         with:
           build_target: armbian
@@ -484,7 +484,7 @@ jobs:
           builder_name: ${{ inputs.builder_name }}
 
       - name: 上传重打包后的固件到 Release
-        uses: ophub/upload-to-releases@main
+        uses: gpzy1988/upload-to-releases@main
         if: ${{ env.PACKAGED_STATUS == 'success' && !cancelled() }}
         with:
           tag: ${{ env.build_tag }}
