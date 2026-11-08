@@ -461,6 +461,29 @@ jobs:
           make_latest: true
           gh_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 导入自定义设备文件
+        if: ${{ steps.clean.outputs.status == 'success' && !cancelled() }}
+        run: |
+          ACTION_DIR="/home/runner/work/_actions/ophub/amlogic-s9xxx-armbian/main"
+          echo "导入自定义设备文件到 ophub action 目录: $ACTION_DIR"
+
+          # 复制 model_database.conf（含 tyc4a 配置）
+          cp build-armbian/armbian-files/common-files/etc/model_database.conf \
+             $ACTION_DIR/build-armbian/armbian-files/common-files/etc/
+
+          # 复制 u-boot 文件
+          mkdir -p $ACTION_DIR/build-armbian/u-boot/rockchip/tyc4a/
+          cp build-armbian/u-boot/rockchip/tyc4a/u-boot.itb \
+             $ACTION_DIR/build-armbian/u-boot/rockchip/tyc4a/
+          cp build-armbian/u-boot/rockchip/tyc4a/idbloader.img \
+             $ACTION_DIR/build-armbian/u-boot/rockchip/tyc4a/
+
+          # 复制 dtb 文件
+          cp build-armbian/armbian-files/platform-files/rockchip/bootfs/dtb/rockchip/rk3568-tyc4a.dtb \
+             $ACTION_DIR/build-armbian/armbian-files/platform-files/rockchip/bootfs/dtb/rockchip/
+
+          echo "自定义设备文件导入完成"
+
       - name: 为目标板型重打包 Armbian 固件
         uses: ophub/amlogic-s9xxx-armbian@main
         if: ${{ steps.clean.outputs.status == 'success' && !cancelled() }}
